@@ -32,15 +32,14 @@ android {
 }
 
 dependencies {
-    implementation 'com.android.tools.compose:compose-preview-renderer:0.0.1-alpha01'
     def room_version = "2.0.0"
+
+    implementation "androidx.room:room-runtime:$room_version"
     kapt "androidx.room:room-compiler:$room_version"
 
     def lifecycle_version = "2.0.0"
 
     implementation "androidx.lifecycle:lifecycle-extensions:$lifecycle_version"
-    implementation "androidx.room:room-runtime:$room_version"
-    kapt "androidx.room:room-compiler:$room_version"
 
     implementation fileTree(dir: 'libs', include: ['*.jar'])
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"

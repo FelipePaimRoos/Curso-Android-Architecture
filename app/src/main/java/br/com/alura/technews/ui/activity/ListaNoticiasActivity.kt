@@ -13,25 +13,20 @@ import br.com.alura.technews.model.Noticia
 import br.com.alura.technews.repository.NoticiaRepository
 import br.com.alura.technews.ui.activity.extensions.mostraErro
 import br.com.alura.technews.ui.recyclerview.adapter.ListaNoticiasAdapter
+import br.com.alura.technews.ui.viewmodel.ListaNoticiasViewModel
 import br.com.alura.technews.ui.viewmodel.factory.ListaNoticiasViewModelFactory
-import kotlinx.android.synthetic.main.activity_lista_noticias.activity_lista_noticias_fab_salva_noticia
-import kotlinx.android.synthetic.main.activity_lista_noticias.activity_lista_noticias_recyclerview
+import kotlinx.android.synthetic.main.activity_lista_noticias.*
 
 private const val TITULO_APPBAR = "Notícias"
 private const val MENSAGEM_FALHA_CARREGAR_NOTICIAS = "Não foi possível carregar as novas notícias"
 
 class ListaNoticiasActivity : AppCompatActivity() {
 
-   // private val repository by lazy {
-        //NoticiaRepository(AppDatabase.getInstance(this).noticiaDAO)
-    //}
-
     private val adapter by lazy {
         ListaNoticiasAdapter(context = this)
     }
-
     private val viewModel by lazy {
-        var repository = NoticiaRepository(AppDatabase.getInstance(this).noticiaDAO)
+        val repository = NoticiaRepository(AppDatabase.getInstance(this).noticiaDAO)
         val factory = ListaNoticiasViewModelFactory(repository)
         val provedor = ViewModelProviders.of(this, factory)
         provedor.get(ListaNoticiasViewModel::class.java)
@@ -43,11 +38,6 @@ class ListaNoticiasActivity : AppCompatActivity() {
         title = TITULO_APPBAR
         configuraRecyclerView()
         configuraFabAdicionaNoticia()
-
-    }
-
-    override fun onResume() {
-        super.onResume()
         buscaNoticias()
     }
 
@@ -69,7 +59,7 @@ class ListaNoticiasActivity : AppCompatActivity() {
     }
 
     private fun buscaNoticias() {
-        viewModel.buscaTodos().observe(this, Observer {resource ->
+        viewModel.buscaTodos().observe(this, Observer { resource ->
             resource.dado?.let { adapter.atualiza(it) }
             resource.erro?.let {
                 mostraErro(MENSAGEM_FALHA_CARREGAR_NOTICIAS)
