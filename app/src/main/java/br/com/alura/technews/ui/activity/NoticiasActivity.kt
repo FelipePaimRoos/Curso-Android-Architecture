@@ -13,6 +13,7 @@ import br.com.alura.technews.ui.fragment.VisualizaNoticiaFragment
 
 
 private const val TAG_FRAGMENT_LISTA_NOTICIAS = "lista-noticias"
+private const val TAG_FRAGMENT_VISUALIZA_NOTICIA = "visualizaNoticia"
 
 class NoticiasActivity : AppCompatActivity() {
 
@@ -22,6 +23,28 @@ class NoticiasActivity : AppCompatActivity() {
         setContentView(R.layout.activity_noticias)
         if (savedInstanceState == null){
             abreListaNoticias()
+        } else {
+            supportFragmentManager.findFragmentByTag(TAG_FRAGMENT_VISUALIZA_NOTICIA)?.let { fragment ->
+
+                val argumentos = fragment.arguments
+                val novoFragment = VisualizaNoticiaFragment()
+                novoFragment.arguments = argumentos
+
+                transacaoFragment {
+                    remove(fragment)
+                }
+                supportFragmentManager.popBackStack()
+
+                transacaoFragment {
+                    val container  = if (resources.configuration.orientation == android.content.res.Configuration.ORIENTATION_LANDSCAPE){
+                        R.id.activity_noticias_container_secundario
+                    } else {
+                        addToBackStack(null)
+                        R.id.activity_noticias_container_primario 
+                    }
+                    replace(container, novoFragment, TAG_FRAGMENT_VISUALIZA_NOTICIA)
+                }
+            }
         }
     }
 
@@ -62,6 +85,7 @@ class NoticiasActivity : AppCompatActivity() {
         startActivity(intent)
     }
 
+
     private fun abreVisualizadorNoticia(noticia: Noticia) {
         val fragment = VisualizaNoticiaFragment()
         val dados = Bundle()
@@ -71,10 +95,10 @@ class NoticiasActivity : AppCompatActivity() {
             val container  = if (resources.configuration.orientation == android.content.res.Configuration.ORIENTATION_LANDSCAPE){
                 R.id.activity_noticias_container_secundario
             } else {
+                addToBackStack(null)
                 R.id.activity_noticias_container_primario
             }
-            addToBackStack(null)
-            replace(container, fragment)
+            replace(container, fragment, TAG_FRAGMENT_VISUALIZA_NOTICIA)
         }
     }
 
