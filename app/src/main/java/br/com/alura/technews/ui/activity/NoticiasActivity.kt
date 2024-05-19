@@ -4,6 +4,7 @@ import android.content.Intent
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
+import androidx.sqlite.db.SupportSQLiteOpenHelper.Configuration
 import br.com.alura.technews.R
 import br.com.alura.technews.model.Noticia
 import br.com.alura.technews.ui.activity.extensions.transacaoFragment
@@ -67,8 +68,13 @@ class NoticiasActivity : AppCompatActivity() {
         dados.putLong(NOTICIA_ID_CHAVE, noticia.id)
         fragment.arguments = dados
         transacaoFragment {
+            val container  = if (resources.configuration.orientation == android.content.res.Configuration.ORIENTATION_LANDSCAPE){
+                R.id.activity_noticias_container_secundario
+            } else {
+                R.id.activity_noticias_container_primario
+            }
             addToBackStack(null)
-            replace(R.id.activity_noticias_container_primario, fragment)
+            replace(container, fragment)
         }
     }
 
