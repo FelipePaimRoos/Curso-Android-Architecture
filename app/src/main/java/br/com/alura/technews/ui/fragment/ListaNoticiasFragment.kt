@@ -6,13 +6,19 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
+import androidx.lifecycle.ViewModelProviders
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import br.com.alura.technews.R
+import br.com.alura.technews.database.AppDatabase
 import br.com.alura.technews.model.Noticia
+import br.com.alura.technews.repository.NoticiaRepository
 import br.com.alura.technews.ui.fragment.extensions.mostraErro
 import br.com.alura.technews.ui.recyclerview.adapter.ListaNoticiasAdapter
 import br.com.alura.technews.ui.viewmodel.ListaNoticiasViewModel
+import br.com.alura.technews.ui.viewmodel.VisualizaNoticiaViewModel
+import br.com.alura.technews.ui.viewmodel.factory.ListaNoticiasViewModelFactory
+import br.com.alura.technews.ui.viewmodel.factory.VisualizaNoticiaViewModelFactory
 import kotlinx.android.synthetic.main.lista_noticias.lista_noticias_fab_salva_noticia
 import kotlinx.android.synthetic.main.lista_noticias.lista_noticias_recyclerview
 
@@ -26,7 +32,12 @@ class ListaNoticiasFragment : Fragment() {
         } ?: throw IllegalArgumentException("Contexto inválido")
     }
 
-    private val viewModel: ListaNoticiasViewModel by viewModel()
+    private val viewModel by lazy {
+        var repository = NoticiaRepository(AppDatabase.getInstance(context!!).noticiaDAO)
+        val factory = ListaNoticiasViewModelFactory(repository)
+        val provedor = ViewModelProviders.of(this, factory)
+        provedor.get(ListaNoticiasViewModel::class.java)
+    }
 
     var quandoFabSalvaNoticiaClicado: () -> Unit = {}
 
