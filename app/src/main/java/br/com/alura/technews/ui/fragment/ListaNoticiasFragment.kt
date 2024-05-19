@@ -16,14 +16,12 @@ import br.com.alura.technews.repository.NoticiaRepository
 import br.com.alura.technews.ui.fragment.extensions.mostraErro
 import br.com.alura.technews.ui.recyclerview.adapter.ListaNoticiasAdapter
 import br.com.alura.technews.ui.viewmodel.ListaNoticiasViewModel
-import br.com.alura.technews.ui.viewmodel.VisualizaNoticiaViewModel
 import br.com.alura.technews.ui.viewmodel.factory.ListaNoticiasViewModelFactory
-import br.com.alura.technews.ui.viewmodel.factory.VisualizaNoticiaViewModelFactory
 import kotlinx.android.synthetic.main.lista_noticias.lista_noticias_fab_salva_noticia
 import kotlinx.android.synthetic.main.lista_noticias.lista_noticias_recyclerview
 
 private const val MENSAGEM_FALHA_CARREGAR_NOTICIAS = "Não foi possível carregar as novas notícias"
-
+private const val TITULO_APPBAR = "Notícias"
 class ListaNoticiasFragment : Fragment() {
 
     private val adapter by lazy {
@@ -55,6 +53,7 @@ class ListaNoticiasFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         configuraRecyclerView()
         configuraFabAdicionaNoticia()
+        activity?.title = TITULO_APPBAR
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {

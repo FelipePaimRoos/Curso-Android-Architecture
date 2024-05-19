@@ -24,6 +24,7 @@ import kotlinx.android.synthetic.main.visualiza_noticia.visualiza_noticia_titulo
 
 private const val MENSAGEM_FALHA_REMOCAO = "Não foi possível remover notícia"
 private const val NOTICIA_NAO_ENCONTRADA = "Notícia não encontrada"
+private const val TITULO_APPBAR = "Notícias"
 class VisualizaNoticiaFragment: Fragment() {
 
     private val noticiaId: Long by lazy {
@@ -44,6 +45,7 @@ class VisualizaNoticiaFragment: Fragment() {
         setHasOptionsMenu(true)
         verificaIdDaNoticia()
         buscaNoticiaSelecionada()
+
     }
 
     override fun onCreateOptionsMenu(menu: Menu?, inflater: MenuInflater?) {
@@ -68,6 +70,11 @@ class VisualizaNoticiaFragment: Fragment() {
     ): View? {
         return inflater.inflate(R.layout.visualiza_noticia, container, false)
 
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        activity?.title = TITULO_APPBAR
     }
 
     private fun buscaNoticiaSelecionada() {

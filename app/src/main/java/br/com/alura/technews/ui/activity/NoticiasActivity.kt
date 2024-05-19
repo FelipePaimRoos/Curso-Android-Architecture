@@ -4,14 +4,12 @@ import android.content.Intent
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
-import androidx.fragment.app.FragmentTransaction
 import br.com.alura.technews.R
 import br.com.alura.technews.model.Noticia
 import br.com.alura.technews.ui.activity.extensions.transacaoFragment
 import br.com.alura.technews.ui.fragment.ListaNoticiasFragment
 import br.com.alura.technews.ui.fragment.VisualizaNoticiaFragment
 
-private const val TITULO_APPBAR = "Notícias"
 
 private const val TAG_FRAGMENT_LISTA_NOTICIAS = "lista-noticias"
 
@@ -21,9 +19,18 @@ class NoticiasActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_noticias)
-        title = TITULO_APPBAR
+        if (savedInstanceState == null){
+            abreListaNoticias()
+        }
+    }
+
+    private fun abreListaNoticias() {
         transacaoFragment {
-            add(R.id.activity_noticias_container, ListaNoticiasFragment(), TAG_FRAGMENT_LISTA_NOTICIAS)
+            replace(
+                R.id.activity_noticias_container,
+                ListaNoticiasFragment(),
+                TAG_FRAGMENT_LISTA_NOTICIAS
+            )
         }
     }
 
@@ -60,6 +67,7 @@ class NoticiasActivity : AppCompatActivity() {
         dados.putLong(NOTICIA_ID_CHAVE, noticia.id)
         fragment.arguments = dados
         transacaoFragment {
+            addToBackStack(null)
             replace(R.id.activity_noticias_container, fragment)
         }
     }
